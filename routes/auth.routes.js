@@ -60,42 +60,40 @@ router.post('/signup', (req, res) => {
 
 
 // Handles POST request to /auth/login
-router.post('/signin', (req, res) => {
-    const {username, password } = req.body;
+router.post('/login', (req, res, next) => {
+    const {username, password} = req.body;
 
-    // -----SERVER SIDE VALIDATION ----------
-    /*
-    if ( !email || !password) {
-        res.status(500).json({
-            error: 'Please enter Username and password',
-       })
-      return;  
-    }
-    */
-  
+    // if ( !username || !password) {
+    //     res.status(500).json({
+    //         error: 'Please enter username and password',
+    //    })
+    //   return;  
+    // }
+
     // Find if the user exists in the database 
     UserModel.findOne({username})
       .then((userData) => {
            // check if passwords match
-          bcrypt.compare(password, userData.passwordHash)
+          bcrypt.compare(password, userData.password)
             .then((doesItMatch) => {
                 //if it matches
                 if (doesItMatch) {
                   // req.session is the special object that is available to you
-                  userData.passwordHash = "***";
+                  userData.password = "***";
                   req.session.loggedInUser = userData;
                   res.status(200).json(userData)
                 }
                 // if passwords do not match
                 else {
-                    res.status(500).json({
+                    res.status(501).json({
                         error: 'Passwords don\'t match',
                     })
                   return; 
                 }
             })
-            .catch(() => {
-                res.status(500).json({
+            .catch((err) => {
+              console.log(err)
+                res.status(502).json({
                     error: 'Email format not correct',
                 })
               return; 
@@ -103,7 +101,7 @@ router.post('/signin', (req, res) => {
       })
       // throw an error if the user does not exists 
       .catch((err) => {
-        res.status(500).json({
+        res.status(503).json({
             error: 'Email does not exist',
             message: err
         })
@@ -115,6 +113,6 @@ router.post('/signin', (req, res) => {
 router.post('/logout', (req, res) => {
     req.session.destroy();
     res.status(204).json({});
-})
+});
 
 module.exports = router;
