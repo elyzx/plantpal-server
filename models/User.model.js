@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 let mongoose = require('mongoose');
 require('./Plant.model');
 
-const userSchema = new Schema({
+const userSchema = new Schema ({
   name: String,
   username: {
     type: String,

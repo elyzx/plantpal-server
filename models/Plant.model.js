@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 let mongoose = require('mongoose');
 require('./User.model');
 
-const plantSchema = new Schema({
+const plantSchema = new Schema ({
     name: string,
     description: string,
     photo: string,
@@ -28,7 +28,7 @@ const plantSchema = new Schema({
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId
     },
-}),
+});
 
 const Plant = model('Plant', plantSchema);
 
