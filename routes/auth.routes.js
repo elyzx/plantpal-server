@@ -108,7 +108,6 @@ router.post('/signin', (req, res) => {
         })
         return;  
       });
-  
 });
 
 // Handles POST request to /logout -- logout and destroy the session
@@ -116,3 +115,5 @@ router.post('/logout', (req, res) => {
     req.session.destroy();
     res.status(204).json({});
 })
+
+module.exports = router;
