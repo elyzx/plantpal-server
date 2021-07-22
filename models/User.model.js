@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 let mongoose = require('mongoose');
 require('./Plant.model');
 
@@ -20,6 +20,6 @@ const userSchema = new Schema({
   }],
 });
 
-const User = model("User", userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;

@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 let mongoose = require('mongoose');
-require('./User.model')
+require('./User.model');
 
 const plantSchema = new Schema({
     name: string,
@@ -30,6 +30,6 @@ const plantSchema = new Schema({
     },
 }),
 
-const Plant = model("Plant", plantSchema)
+const Plant = model('Plant', plantSchema);
 
 module.exports = Plant;
