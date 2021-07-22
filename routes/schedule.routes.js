@@ -1,0 +1,2 @@
+// GET /schedule
+// PATCH /schedule
