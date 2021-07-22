@@ -3,9 +3,9 @@ let mongoose = require('mongoose');
 require('./User.model');
 
 const plantSchema = new Schema ({
-    name: string,
-    description: string,
-    photo: string,
+    name: String,
+    description: String,
+    photo: String,
     dateAdded: {
         type: Date,
         default: Date.now

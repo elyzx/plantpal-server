@@ -19,6 +19,15 @@ require("./config")(app);
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
+const authRoutes = require("./routes/auth.routes");
+app.use("/api", authRoutes);
+
+const profileRoutes = require("./routes/profile.routes");
+app.use("/api", profileRoutes);
+
+const plantRoutes = require("./routes/plants.routes");
+app.use("api", plantRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
