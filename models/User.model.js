@@ -1,12 +1,23 @@
 const { Schema, model } = require("mongoose");
+let mongoose = require('mongoose');
+require('./Plant.model');
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
 const userSchema = new Schema({
+  name: String,
   username: {
     type: String,
-    // unique: true -> Ideally, should be unique, but its up to you
+    unique: true,
   },
+  email: {
+    type: String,
+    unique: true,
+  },
+  location: String,
   password: String,
+  plant: [{
+    ref: 'Plant',
+    type: mongoose.Schema.Types.ObjectId,
+  }],
 });
 
 const User = model("User", userSchema);
