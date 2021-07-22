@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const PlantModel = require('../models/User.model')
+const PlantModel = require('../models/Plant.model')
 
 
 // GET /plants -- show list of all plants for that user

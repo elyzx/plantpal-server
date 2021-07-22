@@ -62,7 +62,7 @@ router.post('/signup', (req, res) => {
 // Handles POST request to /auth/login
 router.post('/signin', (req, res) => {
     const {username, password } = req.body;
-
+  console.log(req.body)
     // -----SERVER SIDE VALIDATION ----------
     /*
     if ( !email || !password) {
@@ -77,7 +77,8 @@ router.post('/signin', (req, res) => {
     UserModel.findOne({username})
       .then((userData) => {
            // check if passwords match
-          bcrypt.compare(password, userData.passwordHash)
+           console.log(userData)
+          bcrypt.compare(password, userData.password)
             .then((doesItMatch) => {
                 //if it matches
                 if (doesItMatch) {
@@ -96,7 +97,7 @@ router.post('/signin', (req, res) => {
             })
             .catch(() => {
                 res.status(500).json({
-                    error: 'Email format not correct',
+                    error: 'User format not correct',
                 })
               return; 
             });
@@ -104,7 +105,7 @@ router.post('/signin', (req, res) => {
       // throw an error if the user does not exists 
       .catch((err) => {
         res.status(500).json({
-            error: 'Email does not exist',
+            error: 'User does not exist',
             message: err
         })
         return;  
