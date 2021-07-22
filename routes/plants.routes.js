@@ -43,8 +43,7 @@ router.patch('/plants/:id', (req, res) => {
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
     PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
         .then((response) => {
-            res.status(200).json(response)
-            
+            res.status(200).json(response)   
         })
         .catch((err) => {
             res.status(500).json({
