@@ -86,4 +86,4 @@ router.post('/plants/create', (req, res) => {
           })  
 })
 
-
+module.exports = router;
