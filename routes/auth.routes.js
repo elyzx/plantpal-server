@@ -60,21 +60,6 @@ router.post('/signup', (req, res) => {
 
 
 // Handles POST request to /auth/login
-<<<<<<< HEAD
-router.post('/signin', (req, res) => {
-    const {username, password } = req.body;
-  console.log(req.body)
-    // -----SERVER SIDE VALIDATION ----------
-    /*
-    if ( !email || !password) {
-        res.status(500).json({
-            error: 'Please enter Username and password',
-       })
-      return;  
-    }
-    */
-  
-=======
 router.post('/login', (req, res, next) => {
     const {username, password} = req.body;
 
@@ -85,15 +70,10 @@ router.post('/login', (req, res, next) => {
     //   return;  
     // }
 
->>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
     // Find if the user exists in the database 
     UserModel.findOne({username})
       .then((userData) => {
            // check if passwords match
-<<<<<<< HEAD
-           console.log(userData)
-=======
->>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
           bcrypt.compare(password, userData.password)
             .then((doesItMatch) => {
                 //if it matches
@@ -114,11 +94,7 @@ router.post('/login', (req, res, next) => {
             .catch((err) => {
               console.log(err)
                 res.status(500).json({
-<<<<<<< HEAD
-                    error: 'User format not correct',
-=======
                     error: 'Login details not correct',
->>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
                 })
               return; 
             });
@@ -126,11 +102,7 @@ router.post('/login', (req, res, next) => {
       // throw an error if the user does not exists 
       .catch((err) => {
         res.status(500).json({
-<<<<<<< HEAD
-            error: 'User does not exist',
-=======
             error: 'Username does not exist',
->>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
             message: err
         })
         return;  
