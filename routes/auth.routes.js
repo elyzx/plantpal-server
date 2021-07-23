@@ -85,7 +85,7 @@ router.post('/login', (req, res, next) => {
                 }
                 // if passwords do not match
                 else {
-                    res.status(501).json({
+                    res.status(500).json({
                         error: 'Passwords don\'t match',
                     })
                   return; 
@@ -93,16 +93,16 @@ router.post('/login', (req, res, next) => {
             })
             .catch((err) => {
               console.log(err)
-                res.status(502).json({
-                    error: 'Email format not correct',
+                res.status(500).json({
+                    error: 'Login details not correct',
                 })
               return; 
             });
       })
       // throw an error if the user does not exists 
       .catch((err) => {
-        res.status(503).json({
-            error: 'Email does not exist',
+        res.status(500).json({
+            error: 'Username does not exist',
             message: err
         })
         return;  
