@@ -60,6 +60,7 @@ router.post('/signup', (req, res) => {
 
 
 // Handles POST request to /auth/login
+<<<<<<< HEAD
 router.post('/signin', (req, res) => {
     const {username, password } = req.body;
   console.log(req.body)
@@ -73,17 +74,32 @@ router.post('/signin', (req, res) => {
     }
     */
   
+=======
+router.post('/login', (req, res, next) => {
+    const {username, password} = req.body;
+
+    // if ( !username || !password) {
+    //     res.status(500).json({
+    //         error: 'Please enter username and password',
+    //    })
+    //   return;  
+    // }
+
+>>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
     // Find if the user exists in the database 
     UserModel.findOne({username})
       .then((userData) => {
            // check if passwords match
+<<<<<<< HEAD
            console.log(userData)
+=======
+>>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
           bcrypt.compare(password, userData.password)
             .then((doesItMatch) => {
                 //if it matches
                 if (doesItMatch) {
                   // req.session is the special object that is available to you
-                  userData.passwordHash = "***";
+                  userData.password = "***";
                   req.session.loggedInUser = userData;
                   res.status(200).json(userData)
                 }
@@ -95,9 +111,14 @@ router.post('/signin', (req, res) => {
                   return; 
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+              console.log(err)
                 res.status(500).json({
+<<<<<<< HEAD
                     error: 'User format not correct',
+=======
+                    error: 'Login details not correct',
+>>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
                 })
               return; 
             });
@@ -105,7 +126,11 @@ router.post('/signin', (req, res) => {
       // throw an error if the user does not exists 
       .catch((err) => {
         res.status(500).json({
+<<<<<<< HEAD
             error: 'User does not exist',
+=======
+            error: 'Username does not exist',
+>>>>>>> 193b36ac566cfad103a39f399076ecf24dbae8f4
             message: err
         })
         return;  
@@ -116,6 +141,6 @@ router.post('/signin', (req, res) => {
 router.post('/logout', (req, res) => {
     req.session.destroy();
     res.status(204).json({});
-})
+});
 
 module.exports = router;
