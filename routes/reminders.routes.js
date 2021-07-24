@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const PlantModel = require('../models/Plant.model');
 const ReminderModel = require('../models/Reminder.model');
 
 const isLoggedIn = (req, res, next) => {  
@@ -26,7 +25,7 @@ router.get('/reminders', isLoggedIn, (req, res) => {
             complete: false,
             user: mongoose.Types.ObjectId(userId),
         })
-    .populate('Plant')
+    .populate('plant')
     .then((reminders) => {
         res.status(200).json(reminders)
     })

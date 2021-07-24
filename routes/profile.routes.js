@@ -12,7 +12,7 @@ const isLoggedIn = (req, res, next) => {
             code: 401,
         })
     };
-  };
+};
 
 // GET /profile -- show the profile page
 router.get('/profile', isLoggedIn, (req, res, next) => {

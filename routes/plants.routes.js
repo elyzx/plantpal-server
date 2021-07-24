@@ -14,11 +14,10 @@ const isLoggedIn = (req, res, next) => {
             code: 401,
         })
     };
-  };
-
+};
 
 // GET /plants -- show list of all plants for that user
-//will handle all GET requests to http:localhost:5005/api/plants
+// will handle all GET requests to http:localhost:5005/api/plants
 router.get('/plants', isLoggedIn, (req, res, next) => {
     console.log(req.cookie)
     PlantModel.find()
@@ -30,9 +29,8 @@ router.get('/plants', isLoggedIn, (req, res, next) => {
                 error: 'Something went wrong',
                 message: err
            })
-        })
-})
-
+        });
+});
 
 // GET /plants/:plantId -- show plant details page
 // will handle all GET requests to http:localhost:5005/api/plants/:plantId
@@ -46,13 +44,11 @@ router.get('/plants/:plantId', isLoggedIn, (req, res) =>{
                  error: 'Something went wrong',
                  message: err
             })
-       })    
-})
-
-
+       });    
+});
 
 // PATCH /plants/:id/(edit) -- edit plant form
-//will handle all PATCH requests to http:localhost:5005/api/plants/:id
+// will handle all PATCH requests to http:localhost:5005/api/plants/:id
 router.patch('/plants/:id', isLoggedIn, (req, res) => {
     let id = req.params.id
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
@@ -71,8 +67,8 @@ router.patch('/plants/:id', isLoggedIn, (req, res) => {
                  error: 'Something went wrong',
                  message: err
             })
-        })     
-})
+        });     
+});
 
 
 // DELETE /plants/:id/(edit) -- delete plant from db
@@ -87,8 +83,8 @@ router.delete('/plants/:id', isLoggedIn, (req, res) => {
                     error: 'Something went wrong',
                     message: err
                })
-          })  
-})
+          });  
+});
 
 // will handle all POST requests to http:localhost:5005/api/plants/create
 router.post('/plants/create', isLoggedIn, (req, res, next) => {  
@@ -132,7 +128,7 @@ router.post('/plants/create', isLoggedIn, (req, res, next) => {
                     error: 'Something went wrong',
                     message: err
                })
-          })  
-})
+          });  
+});
 
 module.exports = router;

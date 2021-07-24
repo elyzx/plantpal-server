@@ -44,7 +44,7 @@ app.use("/api", profileRoutes);
 const plantRoutes = require("./routes/plants.routes");
 app.use("/api", plantRoutes);
 
-const reminderRoutes = require("./routes/plants.routes");
+const reminderRoutes = require("./routes/reminders.routes");
 app.use('/api', reminderRoutes)
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
