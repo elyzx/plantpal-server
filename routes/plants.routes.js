@@ -21,7 +21,7 @@ router.get('/plants', (req, res) => {
 
 // GET /plants/:plantId -- show plant details page
 // will handle all GET requests to http:localhost:5005/api/plants/:plantId
-router.get('/plants/:id', (req, res) =>{
+router.get('/plants/:plantId', (req, res) =>{
     PlantModel.findById(req.params.plantId)
         .then((plant) => {
             res.status(200).json(plant)
