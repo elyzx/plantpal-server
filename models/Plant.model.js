@@ -10,6 +10,10 @@ const plantSchema = new Schema ({
         type: Date,
         default: Date.now
     },
+    lastWateredAt: {
+        type: Date,
+        default: Date.now
+    },
     waterFreq: {
         type: Number,
         min: 1,

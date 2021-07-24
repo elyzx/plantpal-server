@@ -1,6 +1,21 @@
 const router = require('express').Router();
-
+const mongoose = require('mongoose');
 const PlantModel = require('../models/Plant.model')
+const ReminderModel = require('../models/Reminder.model')
+
+
+const isLoggedIn = (req, res, next) => {  
+    if (req.session.loggedInUser) {
+        //calls whatever is to be executed after the isLoggedIn function is over
+        next()
+    }
+    else {
+        res.status(401).json({
+            message: 'Unauthorised user',
+            code: 401,
+        })
+    };
+  };
 
 
 // GET /plants -- show list of all plants for that user
@@ -43,6 +58,12 @@ router.patch('/plants/:id', (req, res) => {
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
     PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
         .then((response) => {
+            // compare the waterfreq before we update the plant, with the waterfrequency in the request
+            // if they are different:
+            //  check if an incomplete remainder exists and update the next-watering day accoringly,
+            //  don't set ti to the past. Set it to today if it would be in the past.
+            // Done
+
             res.status(200).json(response)   
         })
         .catch((err) => {
@@ -70,12 +91,41 @@ router.delete('/plants/:id', (req, res) => {
 })
 
 // will handle all POST requests to http:localhost:5005/api/plants/create
-router.post('/plants/create', (req, res) => {  
+router.post('/plants/create', isLoggedIn, (req, res) => {  
+    let userId = req.session.loggedInUser._id
+    console.log('POST /plants/create', userId)
+
     const {name, description, photo, waterFreq, fertiliseFreq} = req.body;
-    console.log(req.body)
-    PlantModel.create({name: name, description: description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq})
+
+    const userObjId = mongoose.Types.ObjectId(userId)
+
+    PlantModel.create({name: name, description: description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, user: userObjId})
           .then((response) => {
-               res.status(200).json(response)
+            if (waterFreq) {
+                const plantObjId = mongoose.Types.ObjectId(response._id)
+                const today = new Date();
+                let nextWatering = new Date();
+                // waterFrequency is in days
+                nextWatering.setDate(nextWatering.getDate() + waterFreq)
+                
+                ReminderModel.create(
+                    {
+                        wateredAt: today,
+                        nextWatering: nextWatering,
+                        plant: plantObjId,
+                        user: userObjId,
+                    })
+                .then((reminderResponse) => {
+                    console.log("remainder created: ", reminderResponse)
+                    res.status(200).json(response)
+                })
+                .catch((err) => {
+                    console.log("Attention, created plant with waterFreq but adding the remainder failed")
+                    res.status(200).json(response)
+                })
+            } else {
+                res.status(200).json(response)
+            }
           })
           .catch((err) => {
                res.status(500).json({
@@ -84,5 +134,6 @@ router.post('/plants/create', (req, res) => {
                })
           })  
 })
+
 
 module.exports = router;

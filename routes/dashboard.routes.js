@@ -1,1 +1,14 @@
 // GET /dashboard
+
+const isLoggedIn = (req, res, next) => {  
+    if (req.session.loggedInUser) {
+        //calls whatever is to be executed after the isLoggedIn function is over
+        next()
+    }
+    else {
+        res.status(401).json({
+            message: 'Unauthorised user',
+            code: 401,
+        })
+    };
+  };
