@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const PlantModel = require('../models/Plant.model')
 const ReminderModel = require('../models/Reminder.model')
 
-
 const isLoggedIn = (req, res, next) => {  
     if (req.session.loggedInUser) {
         //calls whatever is to be executed after the isLoggedIn function is over
@@ -20,7 +19,8 @@ const isLoggedIn = (req, res, next) => {
 
 // GET /plants -- show list of all plants for that user
 //will handle all GET requests to http:localhost:5005/api/plants
-router.get('/plants', (req, res) => {
+router.get('/plants', isLoggedIn, (req, res, next) => {
+    console.log(req.cookie)
     PlantModel.find()
         .then((plants) => {
             res.status(200).json(plants)
@@ -36,7 +36,7 @@ router.get('/plants', (req, res) => {
 
 // GET /plants/:plantId -- show plant details page
 // will handle all GET requests to http:localhost:5005/api/plants/:plantId
-router.get('/plants/:plantId', (req, res) =>{
+router.get('/plants/:plantId', isLoggedIn, (req, res) =>{
     PlantModel.findById(req.params.plantId)
         .then((plant) => {
             res.status(200).json(plant)
@@ -53,7 +53,7 @@ router.get('/plants/:plantId', (req, res) =>{
 
 // PATCH /plants/:id/(edit) -- edit plant form
 //will handle all PATCH requests to http:localhost:5005/api/plants/:id
-router.patch('/plants/:id', (req, res) => {
+router.patch('/plants/:id', isLoggedIn, (req, res) => {
     let id = req.params.id
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
     PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
@@ -77,7 +77,7 @@ router.patch('/plants/:id', (req, res) => {
 
 // DELETE /plants/:id/(edit) -- delete plant from db
 // will handle all DELETE requests to http:localhost:5005/api/plants/:id
-router.delete('/plants/:id', (req, res) => {
+router.delete('/plants/:id', isLoggedIn, (req, res) => {
     PlantModel.findByIdAndDelete(req.params.id)
           .then((response) => {
                res.status(200).json(response)
@@ -91,7 +91,7 @@ router.delete('/plants/:id', (req, res) => {
 })
 
 // will handle all POST requests to http:localhost:5005/api/plants/create
-router.post('/plants/create', isLoggedIn, (req, res) => {  
+router.post('/plants/create', isLoggedIn, (req, res, next) => {  
     let userId = req.session.loggedInUser._id
     console.log('POST /plants/create', userId)
 
@@ -106,7 +106,7 @@ router.post('/plants/create', isLoggedIn, (req, res) => {
                 const today = new Date();
                 let nextWatering = new Date();
                 // waterFrequency is in days
-                nextWatering.setDate(nextWatering.getDate() + waterFreq)
+                nextWatering.setDate(nextWatering.getDate() + parseInt(waterFreq))
                 
                 ReminderModel.create(
                     {
@@ -134,6 +134,5 @@ router.post('/plants/create', isLoggedIn, (req, res) => {
                })
           })  
 })
-
 
 module.exports = router;

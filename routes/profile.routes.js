@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const UserModel = require('../models/User.model');
 
 const isLoggedIn = (req, res, next) => {  
@@ -16,9 +15,9 @@ const isLoggedIn = (req, res, next) => {
   };
 
 // GET /profile -- show the profile page
-router.get('/profile', (req, res, next) => {
+router.get('/profile', isLoggedIn, (req, res, next) => {
     let userObj = req.session.loggedInUser;
-
+    console.log('profile', req.session.loggedInUser)
     UserModel.findById(userObj._id)
         .then((profile) => {
             res.status(200).json(profile)

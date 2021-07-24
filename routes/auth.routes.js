@@ -81,6 +81,7 @@ router.post('/login', (req, res, next) => {
                   // req.session is the special object that is available to you
                   userData.password = "***";
                   req.session.loggedInUser = userData;
+                  console.log("/login req.sesion.loggedInUser:", req.session.loggedInUser)
                   res.status(200).json(userData)
                 }
                 // if passwords do not match
@@ -121,6 +122,7 @@ module.exports = router;
 const isLoggedIn = (req, res, next) => {  
   if (req.session.loggedInUser) {
       //calls whatever is to be executed after the isLoggedIn function is over
+      console.log("is Logged in in auth; req.sesion.loggedInUser:", req.session.loggedInUser)
       next()
   }
   else {
@@ -134,5 +136,7 @@ const isLoggedIn = (req, res, next) => {
 // THIS IS A PROTECTED ROUTE
 // will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
-    res.status(200).json(req.session.loggedInUser);
+  console.log(req.cookie)
+    
+  res.status(200).json(req.session.loggedInUser);
 });
