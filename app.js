@@ -15,6 +15,8 @@ const app = express();
 require("./config")(app);
 
 const session = require('express-session');
+const MongoStore = require('connect-mongo')
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -23,6 +25,10 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 24* 60 * 60 // your cookie will be cleared after these seconds
       },
+    store: new MongoStore({
+      mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost/plantpal',
+      ttl: 60*60*24
+    })
 }));
 
 // 👇 Start handling routes here
