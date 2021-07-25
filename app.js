@@ -47,6 +47,9 @@ app.use("/api", plantRoutes);
 const reminderRoutes = require("./routes/reminders.routes");
 app.use('/api', reminderRoutes)
 
+const fileUploadRoutes = require('./routes/file-upload.routes')
+app.use("/api", fileUploadRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
