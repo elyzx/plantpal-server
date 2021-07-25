@@ -1,6 +1,5 @@
-const express = require('express');
+const router = require('express').Router();
 const mongoose = require('mongoose');
-const router = express.Router();
 const ReminderModel = require('../models/Reminder.model');
 
 const isLoggedIn = (req, res, next) => {  
@@ -41,29 +40,29 @@ router.get('/reminders', isLoggedIn, (req, res) => {
 // Set the current incomplete reminder for this plant to complete
 // update the wateredAt date to today
 // create a new incomplete reminder from today + plant's waterFrequency
-router.patch('/reminders/:reminderId', isLoggedIn, (req, res) => {
+router.patch('/reminders/:reminderId', isLoggedIn, (req, res, next) => {
     let userId = req.session.loggedInUser._id
-    let userObjId = mongoose.Types.ObjectId(userId)
-
-    ReminderModel.findById(req.params.reminderId)
+    let reminderId = req.params.reminderId
+    ReminderModel.findById(reminderId)
     .populate('plant')
     .then((reminder) => {
+        console.log("remdinder is: ", reminder)
         if (reminder) {
-            if (reminder.user == userObjId) {
+            if (reminder.user == userId) {
                 let waterFreq = reminder.plant.waterFreq
                 let nextWatering = new Date()
                 nextWatering.setDate(nextWatering.getDate() + waterFreq)
     
-                ReminderModel.findByIdAndUpdate(reminder._id, { complete: true, wateredAt: new Date() })
+                ReminderModel.findByIdAndUpdate(reminderId, { complete: true, wateredAt: new Date() })
                 .then(() => {
                     ReminderModel.create(
                         {
                             nextWatering: nextWatering,
-                            plant: plantObjId,
-                            user: userObjId,
+                            plant: reminder.plant._id,
+                            user: reminder.user._id,
                         })
                         .then(() => {
-                            res.status(204)
+                            res.status(204).json({})
                         })
                         .catch((err) => {
                             res.status(500).json({
@@ -73,6 +72,7 @@ router.patch('/reminders/:reminderId', isLoggedIn, (req, res) => {
                         })
                 })
                 .catch((err) => {
+                    console.log("error: ", err)
                     res.status(500).json({
                         error: 'Failed to update reminder',
                         message: err
@@ -80,7 +80,7 @@ router.patch('/reminders/:reminderId', isLoggedIn, (req, res) => {
                 })
             }
             else {
-                res.status(401).json({
+                res.status(403).json({
                     error: 'Reminder not found',
                 })
             }
