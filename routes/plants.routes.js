@@ -106,7 +106,6 @@ router.post('/plants/create', isLoggedIn, (req, res, next) => {
                 
                 ReminderModel.create(
                     {
-                        wateredAt: today,
                         nextWatering: nextWatering,
                         plant: plantObjId,
                         user: userObjId,
