@@ -21,7 +21,6 @@ router.get('/reminders', isLoggedIn, (req, res) => {
 
     ReminderModel.find(
         {
-            complete: false,
             user: mongoose.Types.ObjectId(userId),
         })
     .populate('plant')
@@ -46,10 +45,11 @@ router.patch('/reminders/:reminderId', isLoggedIn, (req, res, next) => {
     ReminderModel.findById(reminderId)
     .populate('plant')
     .then((reminder) => {
-        console.log("remdinder is: ", reminder)
+        console.log("reminder is: ", reminder)
         if (reminder) {
             if (reminder.user == userId) {
                 let waterFreq = reminder.plant.waterFreq
+                console.log('how often i need watering', waterFreq)
                 let nextWatering = new Date()
                 nextWatering.setDate(nextWatering.getDate() + waterFreq)
     
