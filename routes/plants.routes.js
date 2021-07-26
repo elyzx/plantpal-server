@@ -70,7 +70,6 @@ router.patch('/plants/:id', isLoggedIn, (req, res) => {
         });     
 });
 
-
 // DELETE /plants/:id/(edit) -- delete plant from db
 // will handle all DELETE requests to http:localhost:5005/api/plants/:id
 router.delete('/plants/:id', isLoggedIn, (req, res) => {
