@@ -15,7 +15,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 // GET /profile -- show the profile page
-router.get('/profile', isLoggedIn, (req, res, next) => {
+router.get('/profile/:id', isLoggedIn, (req, res, next) => {
     let userObj = req.session.loggedInUser;
     console.log('profile', req.session.loggedInUser)
     UserModel.findById(userObj._id)
@@ -31,7 +31,7 @@ router.get('/profile', isLoggedIn, (req, res, next) => {
 });
 
 // PATCH /profile -- edit the profile details and send to db
-router.patch('/profile', (req, res) => {
+router.patch('/profile/:id', (req, res) => {
     let userObj = req.session.loggedInUser;
     let dynamicProfileId = req.params.id;
     const {name, username, email} = req.body;
@@ -53,7 +53,7 @@ router.patch('/profile', (req, res) => {
 });
 
 // DELETE /profile -- delete the profile
-router.delete('/profile', (req, res, next) => {
+router.delete('/profile/:id', (req, res, next) => {
     let userObj = req.session.loggedInUser;
     let dynamicProfileId = req.params.id;
 
