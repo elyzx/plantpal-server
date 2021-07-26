@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
+const UserModel = require('../models/User.model')
 const PlantModel = require('../models/Plant.model')
 const ReminderModel = require('../models/Reminder.model')
 
@@ -18,11 +19,28 @@ const isLoggedIn = (req, res, next) => {
 
 // GET /plants -- show list of all plants for that user
 // will handle all GET requests to http:localhost:5005/api/plants
+// router.get('/plants', isLoggedIn, (req, res, next) => {
+//     PlantModel.find()
+//         .populate('user')
+//         .then((plants) => {
+//             res.status(200).json(plants)
+//         })
+//         .catch((err) => {
+//             res.status(500).json({
+//                 error: 'Something went wrong',
+//                 message: err
+//            })
+//         });
+// });
+
 router.get('/plants', isLoggedIn, (req, res, next) => {
-    console.log(req.cookie)
-    PlantModel.find()
-        .then((plants) => {
-            res.status(200).json(plants)
+    let userId = req.session.loggedInUser
+
+    UserModel.findById(userId)
+        .populate('plant')
+        .then((user) => {
+            console.log("user", user)
+            res.status(200).json(user.plant)
         })
         .catch((err) => {
             res.status(500).json({
@@ -31,6 +49,7 @@ router.get('/plants', isLoggedIn, (req, res, next) => {
            })
         });
 });
+
 
 // GET /plants/:plantId -- show plant details page
 // will handle all GET requests to http:localhost:5005/api/plants/:plantId
@@ -49,7 +68,7 @@ router.get('/plants/:plantId', isLoggedIn, (req, res) =>{
 
 // PATCH /plants/:id/(edit) -- edit plant form
 // will handle all PATCH requests to http:localhost:5005/api/plants/:id
-router.patch('/plants/:id', isLoggedIn, (req, res) => {
+router.patch('/plants/:id/edit', isLoggedIn, (req, res, next) => {
     let id = req.params.id
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
     PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
@@ -75,10 +94,11 @@ router.patch('/plants/:id', isLoggedIn, (req, res) => {
 router.delete('/plants/:id', isLoggedIn, (req, res) => {
     PlantModel.findByIdAndDelete(req.params.id)
           .then((response) => {
-               res.status(200).json(response)
+                ReminderModel.find
+                res.status(200).json(response)
           })
           .catch((err) => {
-               res.status(500).json({
+                res.status(500).json({
                     error: 'Something went wrong',
                     message: err
                })
