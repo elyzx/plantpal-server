@@ -31,7 +31,7 @@ router.get('/profile/:id', isLoggedIn, (req, res, next) => {
 });
 
 // PATCH /profile -- edit the profile details and send to db
-router.patch('/profile/:id', (req, res) => {
+router.patch('/profile/:id', (req, res, next) => {
     let userObj = req.session.loggedInUser;
     let dynamicProfileId = req.params.id;
     const {name, username, email} = req.body;

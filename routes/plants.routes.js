@@ -62,7 +62,6 @@ router.patch('/plants/:id/edit', isLoggedIn, (req, res, next) => {
             //  check if an incomplete remainder exists and update the next-watering day accoringly,
             //  don't set ti to the past. Set it to today if it would be in the past.
             // Done
-
             res.status(200).json(response)   
         })
         .catch((err) => {
@@ -78,8 +77,16 @@ router.patch('/plants/:id/edit', isLoggedIn, (req, res, next) => {
 router.delete('/plants/:id', isLoggedIn, (req, res) => {
     PlantModel.findByIdAndDelete(req.params.id)
           .then((response) => {
-                ReminderModel.find
-                res.status(200).json(response)
+                ReminderModel.deleteMany({plant: response._id})
+                .then(() => {
+                    res.status(200).json(response)
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        error: 'Something went wrong',
+                        message: err
+                   })
+              });  
           })
           .catch((err) => {
                 res.status(500).json({
