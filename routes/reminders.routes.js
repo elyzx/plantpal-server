@@ -19,10 +19,7 @@ router.get('/reminders', isLoggedIn, (req, res) => {
     let userId = req.session.loggedInUser._id
     console.log(userId, 'hello')
 
-    ReminderModel.find(
-        {
-            user: mongoose.Types.ObjectId(userId),
-        })
+    ReminderModel.find({user: userId})
     .populate('plant')
     .then((reminders) => {
         res.status(200).json(reminders)
