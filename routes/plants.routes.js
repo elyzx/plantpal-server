@@ -49,7 +49,7 @@ router.get('/plants/:plantId', isLoggedIn, (req, res) =>{
 
 // PATCH /plants/:id/(edit) -- edit plant form
 // will handle all PATCH requests to http:localhost:5005/api/plants/:id
-router.patch('/plants/:id', isLoggedIn, (req, res) => {
+router.patch('/plants/:id/edit', isLoggedIn, (req, res) => {
     let id = req.params.id
     const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
     PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
