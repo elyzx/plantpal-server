@@ -70,7 +70,6 @@ router.patch('/plants/:id', isLoggedIn, (req, res) => {
         });     
 });
 
-
 // DELETE /plants/:id/(edit) -- delete plant from db
 // will handle all DELETE requests to http:localhost:5005/api/plants/:id
 router.delete('/plants/:id', isLoggedIn, (req, res) => {
@@ -88,12 +87,9 @@ router.delete('/plants/:id', isLoggedIn, (req, res) => {
 
 // will handle all POST requests to http:localhost:5005/api/plants/create
 router.post('/plants/create', isLoggedIn, (req, res, next) => {  
-    let userId = req.session.loggedInUser._id
-    console.log('POST /plants/create', userId)
-
+    let userId = req.session.loggedInUser._id;
     const {name, description, photo, waterFreq, fertiliseFreq} = req.body;
-
-    const userObjId = mongoose.Types.ObjectId(userId)
+    const userObjId = mongoose.Types.ObjectId(userId);
 
     PlantModel.create({name: name, description: description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, user: userObjId})
           .then((response) => {
@@ -111,7 +107,7 @@ router.post('/plants/create', isLoggedIn, (req, res, next) => {
                         user: userObjId,
                     })
                 .then((reminderResponse) => {
-                    console.log("remainder created: ", reminderResponse)
+                    console.log("reminder created: ", reminderResponse)
                     res.status(200).json(response)
                 })
                 .catch((err) => {
