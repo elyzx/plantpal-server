@@ -19,28 +19,12 @@ const isLoggedIn = (req, res, next) => {
 
 // GET /plants -- show list of all plants for that user
 // will handle all GET requests to http:localhost:5005/api/plants
-// router.get('/plants', isLoggedIn, (req, res, next) => {
-//     PlantModel.find()
-//         .populate('user')
-//         .then((plants) => {
-//             res.status(200).json(plants)
-//         })
-//         .catch((err) => {
-//             res.status(500).json({
-//                 error: 'Something went wrong',
-//                 message: err
-//            })
-//         });
-// });
-
 router.get('/plants', isLoggedIn, (req, res, next) => {
     let userId = req.session.loggedInUser
 
-    UserModel.findById(userId)
-        .populate('plant')
-        .then((user) => {
-            console.log("user", user)
-            res.status(200).json(user.plant)
+    PlantModel.find({user: userId})
+        .then((plants) => {
+            res.status(200).json(plants)
         })
         .catch((err) => {
             res.status(500).json({
