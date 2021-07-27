@@ -49,6 +49,7 @@ router.patch('/profile', (req, res, next) => {
 
     UserModel.findByIdAndUpdate(userObj._id, {name, username, email}, {new: true})
     .then((response) => {
+        req.session.loggedInUser = response
         res.status(200).json(response)
     })
     .catch((err) => {
