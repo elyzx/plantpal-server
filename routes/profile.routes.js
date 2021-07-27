@@ -22,7 +22,7 @@ router.get("/user", isLoggedIn, (req, res, next) => {
 });
 
 // GET /profile -- show the profile page
-router.get('/profile/:id', isLoggedIn, (req, res, next) => {
+router.get('/profile', isLoggedIn, (req, res, next) => {
     let userObj = req.session.loggedInUser;
     console.log('profile', req.session.loggedInUser)
     UserModel.findById(userObj._id)
@@ -38,7 +38,7 @@ router.get('/profile/:id', isLoggedIn, (req, res, next) => {
 });
 
 // PATCH /profile -- edit the profile details and send to db
-router.patch('/profile/:id', (req, res, next) => {
+router.patch('/profile', (req, res, next) => {
     let userObj = req.session.loggedInUser;
     let dynamicProfileId = req.params.id;
     const {name, username, email} = req.body;
@@ -60,20 +60,21 @@ router.patch('/profile/:id', (req, res, next) => {
 });
 
 // DELETE /profile -- delete the profile
-router.delete('/profile/:id', (req, res, next) => {
+router.delete('/profile', (req, res, next) => {
     let userObj = req.session.loggedInUser;
-    let dynamicProfileId = req.params.id;
+    console.log(req.session.loggedInUser)
+    // let dynamicProfileId = req.params.id;
 
-    if (userObj._id != dynamicProfileId) {
-        return next(`User ${userObj._id} tried to delete another user's profile :(`);
-    };
+    // if (userObj._id != dynamicProfileId) {
+    //     return next(`User ${userObj._id} tried to delete another user's profile :(`);
+    // };
     
     UserModel.findByIdAndDelete(userObj._id)
-        .then(() => {
+        .then((response) => {
             req.session.destroy()
             res.status(200).json(response)
         })
-        .catch(() => {
+        .catch((err) => {
             res.status(500).json({
                 error: 'Something went wrong',
                 message: err
