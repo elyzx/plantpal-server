@@ -18,7 +18,7 @@ const isLoggedIn = (req, res, next) => {
 // will handle all GET requests to http:localhost:5005/api/dashboard
   router.get('/dashboard', isLoggedIn, (req, res, next) => {
     console.log(req.cookie)
-    PlantModel.find()
+    PlantModel.find({user: userId})
         .then((plants) => {
             res.status(200).json(plants)
         })

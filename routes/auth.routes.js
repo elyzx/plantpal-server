@@ -1,6 +1,4 @@
-const express = require('express');
-const router = express.Router();
-
+const router = require('express').Router();
 const UserModel = require('../models/User.model')
 const bcrypt = require('bcryptjs');
 
@@ -116,27 +114,12 @@ router.post('/logout', (req, res) => {
     res.status(204).json({});
 });
 
-module.exports = router;
-
-// middleware to check if user is loggedin
-const isLoggedIn = (req, res, next) => {  
-  if (req.session.loggedInUser) {
-      //calls whatever is to be executed after the isLoggedIn function is over
-      console.log("is Logged in in auth; req.sesion.loggedInUser:", req.session.loggedInUser)
-      next()
-  }
-  else {
-      res.status(401).json({
-          message: 'Unauthorised user',
-          code: 401,
-      })
-  };
-};
-
-// THIS IS A PROTECTED ROUTE
-// will handle all get requests to http:localhost:5005/api/user
-router.get("/user", isLoggedIn, (req, res, next) => {
-  console.log(req.cookie)
+// // THIS IS A PROTECTED ROUTE
+// // will handle all get requests to http:localhost:5005/api/user
+// router.get("/user", isLoggedIn, (req, res, next) => {
+//   console.log(req.cookie)
     
-  res.status(200).json(req.session.loggedInUser);
-});
+//   res.status(200).json(req.session.loggedInUser);
+// });
+
+module.exports = router;
