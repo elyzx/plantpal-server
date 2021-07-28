@@ -33,7 +33,9 @@ const isLoggedIn = (req, res, next) => {
 
 
 router.get('/dashboard/test',isLoggedIn, (req, res, next) => {
-    axios.get(`http://api.weatherbit.io/v2.0/current?&postal_code=27601&country=US&key=40b97bfea4d145428c756bc5caf74cbb`)
+    let { country, postal } = req.session.loggedInUser
+    
+    axios.get(`http://api.weatherbit.io/v2.0/current?&postal_code=${postal}&country=${country}&key=${process.env.API_WEATHER}`)
     .then( (response) => {
         const weatherData = response.data
         console.log('weather response :', weatherData)

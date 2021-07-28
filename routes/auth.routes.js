@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 // Handles POST request to /signup
 router.post('/signup', (req, res) => {
-    const {name, username, email,  password } = req.body;
+    const {name, username, email, country, postal, password } = req.body;
  
     // -----SERVER SIDE VALIDATION ----------
     /* 
@@ -35,7 +35,7 @@ router.post('/signup', (req, res) => {
     // creating a salt 
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
-    UserModel.create({name, username, email, password: hash})
+    UserModel.create({name, username, country, postal, email, password: hash})
       .then((user) => {
         user.passwordHash = "***";
         res.status(200).json(user);
