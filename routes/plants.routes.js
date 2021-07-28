@@ -54,14 +54,9 @@ router.get('/plants/:plantId', isLoggedIn, (req, res) =>{
 // will handle all PATCH requests to http:localhost:5005/api/plants/:id
 router.patch('/plants/:id/edit', isLoggedIn, (req, res, next) => {
     let id = req.params.id
-    const {name, description, photo, waterFreq, fertiliseFreq, isAlive } = req.body
-    PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, isAlive: isAlive }}, {new: true})
+    const {name, description, waterFreq, isAlive } = req.body
+    PlantModel.findByIdAndUpdate(id, {$set: {name:name, description:description, waterFreq: waterFreq, isAlive: isAlive }}, {new: true})
         .then((response) => {
-            // compare the waterfreq before we update the plant, with the waterfrequency in the request
-            // if they are different:
-            //  check if an incomplete remainder exists and update the next-watering day accoringly,
-            //  don't set ti to the past. Set it to today if it would be in the past.
-            // Done
             res.status(200).json(response)   
         })
         .catch((err) => {
