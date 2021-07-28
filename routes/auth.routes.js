@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 // Handles POST request to /signup
 router.post('/signup', (req, res) => {
-    const {name, username, email, password } = req.body;
+    const {name, username, email,  password } = req.body;
  
     // -----SERVER SIDE VALIDATION ----------
     /* 

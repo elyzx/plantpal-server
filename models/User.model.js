@@ -13,6 +13,8 @@ const userSchema = new Schema ({
     unique: true,
   },
   location: String,
+  postal: String,
+  country: String,
   password: String,
   plant: [{
     ref: 'Plant',
