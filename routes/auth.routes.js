@@ -43,13 +43,13 @@ router.post('/signup', (req, res) => {
       .catch((err) => {
         if (err.code === 11000) {
           res.status(500).json({
-            errorMessage: 'username or email entered already exists!',
+            errorMessage: 'Username or email already exists! Please check and try again.',
             message: err,
           });
         } 
         else {
           res.status(500).json({
-            errorMessage: 'Something went wrong!',
+            errorMessage: 'Sign up failed. Please try again!',
             message: err,
           });
         }
@@ -85,7 +85,7 @@ router.post('/login', (req, res, next) => {
                 // if passwords do not match
                 else {
                     res.status(500).json({
-                        error: 'Passwords don\'t match',
+                        error: 'Incorrect password entered. Please check and try again.',
                     })
                   return; 
                 }
@@ -93,7 +93,7 @@ router.post('/login', (req, res, next) => {
             .catch((err) => {
               console.log(err)
                 res.status(500).json({
-                    error: 'Login details not correct',
+                    error: 'Login details not correct. Please check and try again.',
                 })
               return; 
             });
