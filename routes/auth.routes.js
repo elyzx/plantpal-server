@@ -101,7 +101,7 @@ router.post('/login', (req, res, next) => {
       // throw an error if the user does not exists 
       .catch((err) => {
         res.status(500).json({
-            error: 'Username does not exist',
+            error: 'Invalid username. Please check and try again.',
             message: err
         })
         return;  
@@ -113,13 +113,5 @@ router.post('/logout', (req, res) => {
     req.session.destroy();
     res.status(204).json({});
 });
-
-// // THIS IS A PROTECTED ROUTE
-// // will handle all get requests to http:localhost:5005/api/user
-// router.get("/user", isLoggedIn, (req, res, next) => {
-//   console.log(req.cookie)
-    
-//   res.status(200).json(req.session.loggedInUser);
-// });
 
 module.exports = router;

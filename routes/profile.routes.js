@@ -40,12 +40,12 @@ router.get('/profile', isLoggedIn, (req, res, next) => {
 // PATCH /profile -- edit the profile details and send to db
 router.patch('/profile/:id', (req, res, next) => {
     let userObj = req.session.loggedInUser;
-    let dynamicProfileId = req.params.id;
+    // let dynamicProfileId = req.params.id;
     const {name, username, email} = req.body;
 
-    if (userObj._id != dynamicProfileId) {
-        return next(`User ${userObj._id} tried to edit another user's profile :(`);
-    };
+    // if (userObj._id != dynamicProfileId) {
+    //     return next(`User ${userObj._id} tried to edit another user's profile :(`);
+    // };
 
     UserModel.findByIdAndUpdate(userObj._id, {name, username, email}, {new: true})
     .then((response) => {
@@ -61,7 +61,7 @@ router.patch('/profile/:id', (req, res, next) => {
 });
 
 // DELETE /profile -- delete the profile
-router.delete('/profile/:id', (req, res, next) => {
+router.delete('/profile', (req, res, next) => {
     let userObj = req.session.loggedInUser;
     console.log(req.session.loggedInUser)
     // let dynamicProfileId = req.params.id;
