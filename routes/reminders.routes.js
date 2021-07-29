@@ -22,7 +22,10 @@ router.get('/reminders', isLoggedIn, (req, res) => {
     ReminderModel.find({user: userId})
     .populate('plant')
     .then((reminders) => {
-        res.status(200).json(reminders)
+        let filteredReminders = reminders.filter((reminder) => {
+            return reminder.plant.isAlive
+        })
+        res.status(200).json(filteredReminders)
     })
     .catch((err) => {
         res.status(500).json({
