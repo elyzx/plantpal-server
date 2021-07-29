@@ -60,6 +60,7 @@ router.patch('/plants/:id/edit', isLoggedIn, (req, res, next) => {
             res.status(200).json(response)   
         })
         .catch((err) => {
+            console.log(err)
             res.status(500).json({
                  error: 'Something went wrong',
                  message: err
