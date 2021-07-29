@@ -41,13 +41,13 @@ router.get('/profile', isLoggedIn, (req, res, next) => {
 router.patch('/profile', (req, res, next) => {
     let userObj = req.session.loggedInUser;
     // let dynamicProfileId = req.params.id;
-    const {name, username, email} = req.body;
+    const {name, username, email, country, postal} = req.body;
 
     // if (userObj._id != dynamicProfileId) {
     //     return next(`User ${userObj._id} tried to edit another user's profile :(`);
     // };
 
-    UserModel.findByIdAndUpdate(userObj._id, {name, username, email}, {new: true})
+    UserModel.findByIdAndUpdate(userObj._id, {name, username, email, postal, country}, {new: true})
     .then((response) => {
         req.session.loggedInUser = response
         res.status(200).json(response)
