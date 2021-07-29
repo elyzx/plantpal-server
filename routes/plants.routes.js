@@ -94,10 +94,10 @@ router.delete('/plants/:id', isLoggedIn, (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/plants/create
 router.post('/plants/create', isLoggedIn, (req, res, next) => {  
     let userId = req.session.loggedInUser._id;
-    const {name, description, photo, waterFreq, fertiliseFreq} = req.body;
+    const {name, description, photo, waterFreq} = req.body;
     const userObjId = mongoose.Types.ObjectId(userId);
 
-    PlantModel.create({name: name, description: description, photo: photo, waterFreq: waterFreq, fertiliseFreq: fertiliseFreq, user: userObjId})
+    PlantModel.create({name: name, description: description, photo: photo, waterFreq: waterFreq, user: userObjId})
           .then((response) => {
             if (waterFreq) {
                 const plantObjId = mongoose.Types.ObjectId(response._id)
